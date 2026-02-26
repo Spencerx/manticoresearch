@@ -9383,6 +9383,17 @@ class ExtraLastInsertID_c final: public ISphExtra
 	}
 };
 
+inline int GetActiveSessionTimeoutS()
+{
+	const int i = session::GetTimeoutS ();
+	return i<0?g_iClientQlTimeoutS:i;
+}
+
+inline int GetActiveSessionWaitTimeoutS()
+{
+	const int i = session::GetWaitTimeoutS ();
+	return i<0?g_iClientQlWaitTimeoutS:i;
+}
 
 // STMT_SELECT_COLUMNS: SELECT @@sysvar1 [ as alias] [@@sysvarN [ as alias]] [limit M]
 // SELECT expr, @@sysvar1, expr2, ... [limit M]
@@ -9402,6 +9413,8 @@ void HandleMysqlSelectColumns ( RowBuffer_i & tOut, const SqlStmt_t & tStmt, Cli
 		{ MYSQL_COL_STRING,	"@@character_set_client", [] {return "utf8";}},
 		{ MYSQL_COL_STRING,	"@@character_set_connection", [] {return "utf8";}},
 		{ MYSQL_COL_LONG,	"@@max_allowed_packet", [] { StringBuilder_c s; s << g_iMaxPacketSize; return CSphString(s); }},
+		{ MYSQL_COL_LONG,	"@@wait_timeout", [] { StringBuilder_c s; s << GetActiveSessionWaitTimeoutS (); return CSphString(s); }},
+		{ MYSQL_COL_LONG,	"@@interactive_timeout", [] { StringBuilder_c s; s << GetActiveSessionTimeoutS (); return CSphString(s); }},
 		{ MYSQL_COL_STRING,	"@@version_comment", [] { return szGIT_BRANCH_ID;}},
 		{ MYSQL_COL_LONG,	"@@lower_case_table_names", [] { return "1"; }},
 		{ MYSQL_COL_STRING,	"@@session.last_insert_id", [pSession] { return GetLastInsertId ( pSession ); } },
@@ -9661,6 +9674,8 @@ void HandleMysqlShowVariables ( RowBuffer_i & dRows, const SqlStmt_t & tStmt )
 
 	if ( tStmt.m_iIntParam>=0 ) // that is SHOW GLOBAL VARIABLES
 	{
+		dTable.MatchTupletf ( "wait_timeout", "%d", g_iClientQlWaitTimeoutS );
+		dTable.MatchTupletf ( "interactive_timeout", "%d", g_iClientQlTimeoutS );
 		dTable.MatchTupletf ( "thread_stack", "%d", Threads::GetMaxCoroStackSize() );
 		dTable.MatchTupletFn ( "threads_ex", [] {
 			StringBuilder_c tBuf;
@@ -9675,6 +9690,8 @@ void HandleMysqlShowVariables ( RowBuffer_i & dRows, const SqlStmt_t & tStmt )
 				dTable.MatchTupletf ( dVar.first.cstr(), "%d", dVar.second.m_pVal ? dVar.second.m_pVal->GetLength() : 0 );
 		});
 	} else { // that is local (session) variables
+		dTable.MatchTupletf ( "wait_timeout", "%d", GetActiveSessionWaitTimeoutS() );
+		dTable.MatchTupletf ( "interactive_timeout", "%d", GetActiveSessionTimeoutS() );
 		dTable.MatchTupletf ( "thread_stack", "%d", session::GetMaxStackSize() );
 		dTable.MatchTupletFn ( "threads_ex", [] {
 			StringBuilder_c tBuf;

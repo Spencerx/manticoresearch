@@ -245,6 +245,11 @@ jobs:
 
           run_image_build="$changes_detected"
           run_clt="$changes_detected"
+          skip_clt_tag=false
+          if git tag --points-at HEAD | grep -qx "skip_clt"; then
+            skip_clt_tag=true
+            run_clt=false
+          fi
           if [[ -n "${{ steps.related_prs.outputs.skip_clt_reason }}" ]]; then
             run_clt=false
           fi
@@ -259,6 +264,7 @@ jobs:
           echo "run_image_build=$run_image_build" >> "$GITHUB_OUTPUT"
           echo "run_clt=$run_clt" >> "$GITHUB_OUTPUT"
           echo "run_image_push=$run_image_push" >> "$GITHUB_OUTPUT"
+          echo "skip_clt_tag=$skip_clt_tag" >> "$GITHUB_OUTPUT"
       - name: Summarize gating
         run: |
           {
@@ -269,6 +275,9 @@ jobs:
             echo "* Build test-kit image: ${{ steps.calc.outputs.run_image_build }}"
             echo "* Run CLT tests: ${{ steps.calc.outputs.run_clt }}"
             echo "* Push test-kit image tags: ${{ steps.calc.outputs.run_image_push }}"
+            if [[ "${{ steps.calc.outputs.skip_clt_tag }}" == "true" ]]; then
+              echo "* CLT skip reason: skip_clt tag on commit"
+            fi
             if [[ -n "${{ steps.related_prs.outputs.skip_clt_reason }}" ]]; then
               echo "* CLT skip reason: ${{ steps.related_prs.outputs.skip_clt_reason }}"
             fi

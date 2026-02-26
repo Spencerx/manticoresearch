@@ -98,7 +98,8 @@ int						g_iReadTimeoutS		= 5;	// sec
 int						g_iWriteTimeoutS	= 5;	// sec
 bool					g_bTimeoutEachPacket = true;
 int						g_iClientTimeoutS	= 300;
-int						g_iClientQlTimeoutS	= 900;	// sec
+int						g_iClientQlTimeoutS	= 900;	// sec, ql interactive clients
+int						g_iClientQlWaitTimeoutS	= 28800;	// sec, ql non-interactive clients
 static int				g_iMaxConnection	= 0; // unlimited
 static bool				g_bWatchdog			= true;
 static int				g_iExpansionLimit	= 0;
@@ -8528,9 +8529,9 @@ void HandleMysqlMultiStmt ( const CSphVector<SqlStmt_t> & dStmt, CSphQueryResult
 static bool HandleSetLocal ( CSphString& sError, const CSphString& sName, int64_t iSetValue, CSphString sSetValue, CSphSessionAccum& tAcc )
 {
 	auto& tSess = session::Info();
-	if ( sName == "wait_timeout" || sName == "net_read_timeout" )
+	if ( sName == "wait_timeout" )
 	{
-		tSess.SetTimeoutS ( iSetValue );
+		tSess.SetWaitTimeoutS ( iSetValue );
 		return true;
 	}
 
@@ -8541,9 +8542,9 @@ static bool HandleSetLocal ( CSphString& sError, const CSphString& sName, int64_
 	}
 
 
-	if ( sName == "net_write_timeout" )
+	if ( sName == "net_write_timeout" || sName == "net_read_timeout" || sName == "interactive_timeout" )
 	{
-		tSess.SetWTimeoutS ( iSetValue );
+		tSess.SetTimeoutS ( iSetValue );
 		return true;
 	}
 
@@ -8806,9 +8807,18 @@ static bool HandleSetGlobal ( CSphString & sError, const CSphString & sName, int
 	if ( sName == "wait_timeout" )
 	{
 		if ( tSess.GetVip() )
-			g_iClientQlTimeoutS = iSetValue;
+			g_iClientQlWaitTimeoutS = iSetValue;
 		else
 			sError = "Only VIP connections can change global wait_timeout value";
+		return true;
+	}
+
+	if ( sName == "interactive_timeout" )
+	{
+		if ( tSess.GetVip() )
+			g_iClientQlTimeoutS = iSetValue;
+		else
+			sError = "Only VIP connections can change global interactive_timeout value";
 		return true;
 	}
 

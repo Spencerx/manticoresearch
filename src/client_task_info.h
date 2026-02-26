@@ -122,8 +122,8 @@ public:
 	void SetTimeoutS ( int iTimeoutS ) { m_iTimeoutS = iTimeoutS; }
 	int GetTimeoutS() const { return m_iTimeoutS;}
 
-	void SetWaitTimeoutS ( int iTimeoutS ) { m_iTimeoutS = iTimeoutS; }
-	int GetWaitTimeoutS() const { return m_iTimeoutS;}
+	void SetWaitTimeoutS ( int iTimeoutS ) { m_iWaitTimeoutS = iTimeoutS; }
+	int GetWaitTimeoutS() const { return m_iWaitTimeoutS;}
 
 	void SetSqlQuoteShowCreate ( bool bSqlQuoreShowCreate ) { m_bSqlQuoteShowCreate = bSqlQuoreShowCreate; }
 	int GetSqlQuoteShowCreate() const { return m_bSqlQuoteShowCreate; }

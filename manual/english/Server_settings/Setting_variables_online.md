@@ -77,13 +77,15 @@ Known per-session server variables:
 
 	```bash
 	export MANTICORE_THREADS_EX=8
+ 	# or
 	export MANTICORE_THREADS_EX='16+8/2'
   ```
 
   Or, via the MySQL CLI, as:
   ```sql
   SET threads_ex='16';
-	SET GLOBAL threads_ex='/2';
+  -- or 
+  SET GLOBAL threads_ex='/2';
   ```
 
   Or, as a query parameter, like:

@@ -96,10 +96,11 @@ Known per-session server variables:
   The `threads_ex` configuration follows a hierarchy: environment variables first, then the global variable, and lastly, query options, allowing specific settings to override general ones.
 
   </details>
-* `WAIT_TIMEOUT/net_read_timeout = <value>` sets connection timeout, either per session or global. Global can only be set on a VIP connection.
 
 Known global server variables are:
 
+* `WAIT_TIMEOUT/net_read_timeout = <value>` sets connection timeout, either per session or global. Global can only be
+  set on a VIP connection.
 * `ACCURATE_AGGREGATION`: Sets the default value for the option [accurate_aggregation](../Searching/Options.md#accurate_aggregation) of future queries.
 * `AUTO_OPTIMIZE = {1|0}` Turns on/off [auto_optimize](../Server_settings/Searchd.md#auto_optimize).
 * `cluster_user = name` Sets the username used with `mysqldump` / `mariadb-dump` to [enable replication mode](../Securing_and_compacting_a_table/Backup_and_restore.md#Backup-and-restore-with-mysqldump).

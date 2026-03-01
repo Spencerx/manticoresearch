@@ -102,8 +102,8 @@ Manticore Search 支持影响特定服务器设置的会话级和全局服务器
 
 已知的全局服务器变量有：
 
-* `WAIT_TIMEOUT = <value>` 将 SQL 连接超时设置为非交互式连接允许的最大空闲时间。您可以在每个会话（当前连接）或全局配置此设置，但全局设置仅适用于 VIP 连接。
-* `INTERACTIVE_TIMEOUT = <value>` 将 SQL 连接超时设置为交互式连接允许的最大空闲时间。您可以在每个会话（当前连接）或全局配置此设置，但全局设置仅适用于 VIP 连接。
+* `WAIT_TIMEOUT = <value>` 设置 SQL 连接超时时间为非交互式连接允许的最大空闲时间。您可以通过会话（当前连接）或全局配置此设置，但全局设置仅适用于 VIP 连接。
+* `INTERACTIVE_TIMEOUT = <value>` 设置 SQL 连接超时时间为交互式连接允许的最大空闲时间。与 `WAIT_TIMEOUT` 一样，此设置可以按会话或全局配置，但全局设置仅适用于 VIP 连接。
 * `ACCURATE_AGGREGATION`：设置未来查询的选项 [accurate_aggregation](../Searching/Options.md#accurate_aggregation) 的默认值。
 * `AUTO_OPTIMIZE = {1|0}` 打开/关闭 [auto_optimize](../Server_settings/Searchd.md#auto_optimize)。
 * `cluster_user = name` 设置使用 `mysqldump` / `mariadb-dump` 的用户名以[启用复制模式](../Securing_and_compacting_a_table/Backup_and_restore.md#Backup-and-restore-with-mysqldump)。

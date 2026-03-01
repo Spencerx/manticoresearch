@@ -47,6 +47,7 @@ Manticore Search 支持影响特定服务器设置的会话级和全局服务器
 * `NET_WRITE_TIMEOUT = <value>`
 * `NET_READ_TIMEOUT = <value>`
 * `INTERACTIVE_TIMEOUT = <value>`：为交互式 SQL 会话设置 SQL 连接超时（空闲时间）。一个常见例子是使用命令行客户端（CLI）如 `mysql` 连接到 Manticore 服务器。之前存在全局的“读取”和“写入”超时，但证明容易混淆。现在，`NET_WRITE_TIMEOUT` 和 `NET_READ_TIMEOUT` 是 `INTERACTIVE_TIMEOUT` 的别名。它们都控制同一个变量，仅与 SQL 端点相关：允许连接的最大空闲时间。这类似于 `WAIT_TIMEOUT`，但专门用于交互式会话。
+* `WAIT_TIMEOUT = <value>`：设置非交互式 SQL 会话的 SQL 连接超时（空闲时间）。一个常见示例是客户端库连接到 Manticore 服务器并维护连接池以供重复使用。这类似于 `INTERACTIVE_TIMEOUT`，但专用于非交互式会话。
 * `OPTIMIZE_BY_ID = {0 | 1}`：用于某些 `debug` 命令的内部标志。
 * `PROFILING = {0 | 1}` 在当前会话启用查询分析。默认为 0。另见 [show profile](../Node_info_and_management/Profiling/Query_profile.md)。
 * `ro = {1 | 0}` 将会话切换为只读模式或恢复为非只读模式。在 `show variables` 的输出中，该变量显示为 `session_read_only`。

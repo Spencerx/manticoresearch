@@ -102,8 +102,8 @@ Known per-session server variables:
 
 Known global server variables are:
 
-* `WAIT_TIMEOUT = <value>` sets the SQL connection timeout to the maximum allowed idle time for a non-interactive connection. You can configure this setting either per session (for the current connection) or globally, but global settings are only applicable to VIP connections.
-* `INTERACTIVE_TIMEOUT = <value>` sets the SQL connection timeout to the maximum allowed idle time for interactive connection. You can configure this setting either per session (for the current connection) or globally, but global settings are only applicable to VIP connections.
+* `WAIT_TIMEOUT = <value>` sets the SQL connection timeout to the maximum allowed idle time for a non-interactive connection. You can configure this setting either per session (for the current connection) or globally, but global settings are only applicable using VIP connections.
+* `INTERACTIVE_TIMEOUT = <value>` sets the SQL connection timeout to the maximum allowed idle time for an interactive connection.  Like `WAIT_TIMEOUT`, this setting can be configured per session or globally, but global settings are only applicable using VIP connections.
 * `ACCURATE_AGGREGATION`: Sets the default value for the option [accurate_aggregation](../Searching/Options.md#accurate_aggregation) of future queries.
 * `AUTO_OPTIMIZE = {1|0}` Turns on/off [auto_optimize](../Server_settings/Searchd.md#auto_optimize).
 * `cluster_user = name` Sets the username used with `mysqldump` / `mariadb-dump` to [enable replication mode](../Securing_and_compacting_a_table/Backup_and_restore.md#Backup-and-restore-with-mysqldump).

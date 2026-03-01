@@ -47,6 +47,7 @@ Known per-session server variables:
 * `NET_WRITE_TIMEOUT = <value>`
 * `NET_READ_TIMEOUT = <value>`
 * `INTERACTIVE_TIMEOUT = <value>`: Sets the SQL connection timeout (idle time) for interactive SQL sessions. A common example is connecting to the Manticore server using a command-line client (CLI) like `mysql`. Previously, separate 'read' and 'write' timeouts existed globally, but this proved confusing. Now, `NET_WRITE_TIMEOUT` and `NET_READ_TIMEOUT` are aliases for `INTERACTIVE_TIMEOUT`. They all control the same variable, related only to SQL  endpoints: the maximum idle time allowed over a connection. This is similar to `WAIT_TIMEOUT`, but specifically for interactive sessions.
+* `WAIT_TIMEOUT = <value>`: Sets the SQL connection timeout (idle time) for non-interactive SQL sessions. A common example is a client library connecting to the Manticore server and maintaining a connection pool for reuse. This is similar to `INTERACTIVE_TIMEOUT`, but applies specifically to non-interactive sessions.
 * `OPTIMIZE_BY_ID = {0 | 1}`: Internal flag used in some `debug` commands.
 * `PROFILING = {0 | 1}` enables query profiling in the current session. Defaults to 0. See also [show profile](../Node_info_and_management/Profiling/Query_profile.md).
 * `ro = {1 | 0}` switches session to read-only mode or back. In `show variables` output the variable displayed with name `session_read_only`.
